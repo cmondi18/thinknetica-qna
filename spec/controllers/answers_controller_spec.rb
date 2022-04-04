@@ -17,7 +17,7 @@ RSpec.describe AnswersController, type: :controller do
   describe 'POST #create' do
     context 'with valid attributes' do
       it 'saves a new answer in the database' do
-        expect { post :create, params: { question_id: question.id, answer: attributes_for(:answer) } }.to change(Answer, :count).by(1)
+        expect { post :create, params: { question_id: question.id, answer: attributes_for(:answer) } }.to change(question.answers, :count).by(1)
       end
 
       it 'redirects to question show view' do
@@ -37,13 +37,6 @@ RSpec.describe AnswersController, type: :controller do
 
         expect(response).to render_template :new
       end
-    end
-  end
-
-  describe 'request without question' do
-    it 'raises RecordNotFound when not found' do
-      expect { get :new, params: { question_id: '' } }.to raise_error(ActiveRecord::RecordNotFound)
-      expect { post :create, params: { question_id: '' } }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

@@ -1,1 +1,14 @@
+- if @questions.present?
+  table
+    thead
+      tr
+        th Question title
+      tbody
+        - @questions.each do |question|
+          tr
+            td
+              = question.title
+- else
+  p There are no any questions. Let's create first
+
 p= link_to 'Ask question', new_question_path

@@ -1,34 +1,31 @@
 require 'rails_helper'
 
-feature 'User can see questions', %q{
+feature 'User can see question and answers', %q{
   In order to get answer from a community
   As an (un)authenticated user
-  I'd like to be able to see questions
+  I'd like to be able to see question and answers
 } do
 
-  describe 'Without questions' do
-    scenario 'user sees message about no questions' do
-      visit questions_path
+  before do
+    visit question_path(question)
 
-      expect(page).to have_content "There are no any questions. Let's create first"
+    expect(page).to have_content(question.title)
+    expect(page).to have_content(question.body)
+  end
+
+  describe 'Without answers' do
+    given(:question) { create(:question) }
+
+    scenario 'user sees question and message about no answers' do
+      expect(page).to have_content "There are no any answers yet."
     end
   end
 
-  describe 'With questions' do
-    given(:user) { create(:user) }
-    given!(:questions) { create_list(:question, 3) }
+  describe 'With answers' do
+    given(:question) { create(:question, :with_answers) }
 
-    scenario 'authenticated user sees questions' do
-      sign_in(user)
-      visit questions_path
-
-      expect(page).to have_content(questions.first.title, count: 3)
-    end
-
-    scenario 'unauthenticated user sees questions' do
-      visit questions_path
-
-      expect(page).to have_content(questions.first.title, count: 3)
+    scenario 'user sees question and answers' do
+      expect(page).to have_content(question.answers.first.body, count: 3)
     end
   end
 end

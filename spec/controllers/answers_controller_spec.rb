@@ -8,6 +8,7 @@ RSpec.describe AnswersController, type: :controller do
     before { login(user) }
 
     before { get :new, params: { question_id: question.id } }
+
     it 'assigns a new Answer to @answers' do
       expect(assigns(:answer)).to be_a_new(Answer)
     end
@@ -21,8 +22,12 @@ RSpec.describe AnswersController, type: :controller do
     before { login(user) }
 
     context 'with valid attributes' do
-      it 'saves a new answer in the database' do
+      it 'saves a new answer related to question in the database' do
         expect { post :create, params: { question_id: question.id, answer: attributes_for(:answer) } }.to change(question.answers, :count).by(1)
+      end
+
+      it 'saves a new answer related to user in the database' do
+        expect { post :create, params: { question_id: question.id, answer: attributes_for(:answer) } }.to change(user.answers, :count).by(1)
       end
 
       it 'redirects to question show view' do
@@ -34,7 +39,7 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'with invalid attributes' do
       before { login(user) }
-      
+
       it 'does not save the answer' do
         expect { post :create, params: { question_id: question.id, answer: attributes_for(:answer, :invalid) } }.to_not change(Answer, :count)
       end

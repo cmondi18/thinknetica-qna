@@ -14,3 +14,10 @@ p= @question.body
 
 -else
   p There are no any answers yet.
+
+p Answer
+= form_for @question.answers.new, url: question_answers_path(@question), method: :post, local: true do |f|
+  = f.label :body
+  = f.text_area :body
+
+  = f.submit 'Submit answer'

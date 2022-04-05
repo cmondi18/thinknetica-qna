@@ -3,11 +3,14 @@
     thead
       tr
         th Question title
+        th Actions
       tbody
         - @questions.each do |question|
           tr
             td
               = question.title
+            td
+              = link_to 'Show', question_path(question)
 - else
   p There are no any questions. Let's create first
 

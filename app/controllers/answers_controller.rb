@@ -11,7 +11,7 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @question
     else
-      render :new
+      redirect_to @question, alert: "Can't submit answer with empty body"
     end
   end
 

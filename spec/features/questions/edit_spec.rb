@@ -1,0 +1,53 @@
+feature 'User can edit question', %q{
+  In order to get answer from a community
+  As an authenticated user
+  I'd like to be able to edit question
+} do
+
+  given(:question) { create(:question) }
+
+  describe 'Authenticated user' do
+    given(:user) { create(:user) }
+    given(:another_question) { create(:question) }
+
+    background do
+      question.update(user_id: user.id)
+      sign_in(user)
+    end
+
+    scenario 'edits his question' do
+      visit question_path(question)
+      click_on 'Edit question'
+      fill_in 'Title', with: 'Test question'
+      fill_in 'Body', with: 'text text text?'
+      click_on 'Edit'
+
+      expect(page).to have_content 'Your question was successfully edited.'
+      expect(page).to have_content 'Test question'
+      expect(page).to have_content 'text text text?'
+    end
+
+    scenario "edits question with errors" do
+      visit question_path(question)
+      click_on 'Edit question'
+      fill_in 'Title', with: ''
+      click_on 'Edit'
+
+      expect(page).to have_content "Title can't be blank"
+    end
+
+    scenario "edits not his question" do
+      visit question_path(another_question)
+      click_on 'Edit question'
+      expect(page).to have_content "You can't edit/delete someone else's question"
+    end
+  end
+
+  context 'Unauthenticated user' do
+    scenario "edits question" do
+      visit question_path(question)
+      click_on 'Edit question'
+      expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    end
+  end
+end

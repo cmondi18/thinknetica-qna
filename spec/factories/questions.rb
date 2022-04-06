@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :question do
     title { "Question_title" }
     body { "Question_body" }
-    user { create(:user) }
+    user
 
     trait :invalid do
       title { nil }

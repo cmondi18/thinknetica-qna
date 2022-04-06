@@ -1,6 +1,7 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :load_question, only: %i[show edit update destroy]
+  before_action :check_owner, only: %i[edit update destroy]
 
   def index
     @questions = Question.all
@@ -26,7 +27,7 @@ class QuestionsController < ApplicationController
 
   def update
     if @question.update(question_params)
-      redirect_to @question
+      redirect_to @question, notice: 'Your question was successfully edited.'
     else
       render :edit
     end
@@ -34,13 +35,17 @@ class QuestionsController < ApplicationController
 
   def destroy
     @question.destroy
-    redirect_to questions_path
+    redirect_to questions_path, notice: 'Question was successfully deleted'
   end
 
   private
 
   def load_question
     @question = Question.find(params[:id])
+  end
+
+  def check_owner
+    redirect_to question_path(@question), alert: "You can't edit/delete someone else's question" if User.find(@question.user_id) != current_user
   end
 
   def question_params

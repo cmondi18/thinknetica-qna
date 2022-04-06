@@ -1,5 +1,8 @@
 h1= @question.title
 p= @question.body
+= link_to 'Delete question', question_path, method: :delete
+| |
+= link_to 'Edit question', edit_question_path
 
 -if @question.answers.present?
   table

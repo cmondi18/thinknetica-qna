@@ -4,17 +4,21 @@ feature 'User can edit answer', %q{
   I'd like to be able to edit answer
 } do
 
-  given(:question) { create(:question, :with_answers) }
+  given(:user) { create(:user) }
+  given!(:question) { create(:question) }
+  given!(:answer) { create(:answer, question: question, user: user) }
+
+  # Don't know how to do it better
+  given!(:another_question) { create(:question) }
+  given!(:another_answer) { create(:answer, question: another_question) }
 
   describe 'Authenticated user' do
-    given(:user) { create(:user) }
 
     background do
-      question.answers.first.update(user_id: user.id)
       sign_in(user)
     end
 
-    scenario 'edits his question' do
+    scenario 'edits his answer' do
       visit question_path(question)
       click_on 'Edit answer'
       fill_in 'Body', with: 'text text text?'
@@ -24,7 +28,7 @@ feature 'User can edit answer', %q{
       expect(page).to have_content 'text text text?'
     end
 
-    scenario "edits question with errors" do
+    scenario "edits answer with errors" do
       visit question_path(question)
       click_on 'Edit answer'
       fill_in 'Body', with: ''
@@ -34,16 +38,18 @@ feature 'User can edit answer', %q{
     end
 
     scenario "edits not his answer" do
-      visit question_path(question)
+      visit question_path(another_question)
       click_on 'Edit answer'
+
       expect(page).to have_content "You can't edit/delete someone else's answer"
     end
   end
 
   context 'Unauthenticated user' do
-    scenario "edits question" do
+    scenario "edits answer" do
       visit question_path(question)
       click_on 'Edit answer'
+
       expect(page).to have_content 'You need to sign in or sign up before continuing.'
     end
   end

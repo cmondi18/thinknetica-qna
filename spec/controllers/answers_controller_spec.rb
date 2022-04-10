@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let(:question) { create(:question) }
   let(:user) { create(:user) }
+  let(:answer) { create(:answer) }
 
   describe 'GET #new' do
     before { login(user) }
 
-    before { get :new, params: { question_id: question.id } }
+    before { get :new, params: { question_id: answer.question.id } }
 
     it 'assigns a new Answer to @answers' do
       expect(assigns(:answer)).to be_a_new(Answer)
@@ -23,15 +23,15 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'with valid attributes' do
       it 'saves a new answer related to question in the database' do
-        expect { post :create, params: { question_id: question.id, answer: attributes_for(:answer) } }.to change(question.answers, :count).by(1)
+        expect { post :create, params: { question_id: answer.question.id, answer: attributes_for(:answer) } }.to change(answer.question.answers, :count).by(1)
       end
 
       it 'saves a new answer related to user in the database' do
-        expect { post :create, params: { question_id: question.id, answer: attributes_for(:answer) } }.to change(user.answers, :count).by(1)
+        expect { post :create, params: { question_id: answer.question.id, answer: attributes_for(:answer) } }.to change(user.answers, :count).by(1)
       end
 
       it 'redirects to question show view' do
-        post :create, params: { question_id: question.id, answer: attributes_for(:answer) }
+        post :create, params: { question_id: answer.question.id, answer: attributes_for(:answer) }
 
         expect(response).to redirect_to assigns(:question)
       end
@@ -41,13 +41,94 @@ RSpec.describe AnswersController, type: :controller do
       before { login(user) }
 
       it 'does not save the answer' do
-        expect { post :create, params: { question_id: question.id, answer: attributes_for(:answer, :invalid) } }.to_not change(Answer, :count)
+        question_id = answer.question.id
+        expect { post :create, params: { question_id: question_id, answer: attributes_for(:answer, :invalid) } }.to_not change(Answer, :count)
       end
 
       it 're-renders question view' do
-        post :create, params: { question_id: question.id, answer: attributes_for(:answer, :invalid) }
+        post :create, params: { question_id: answer.question.id, answer: attributes_for(:answer, :invalid) }
 
         expect(response).to redirect_to assigns(:question)
+      end
+    end
+  end
+
+  describe 'GET #edit' do
+    before { login(user) }
+
+    context 'own answer' do
+      before { answer.update(user_id: user.id) }
+
+      before { get :edit, params: { question_id: answer.question, id: answer } }
+
+      it 'assigns the requested answer to @answer' do
+        expect(assigns(:answer)).to eq answer
+      end
+
+      it 'renders edit view' do
+        expect(response).to render_template :edit
+      end
+    end
+
+    context 'no own answer' do
+      before { get :edit, params: { question_id: answer.question, id: answer } }
+
+      it 'redirects to question' do
+        expect(response).to redirect_to question_path(answer.question)
+      end
+    end
+  end
+
+  describe 'PATCH #update' do
+    before { login(user) }
+    context 'own answer' do
+      before { answer.update(user_id: user.id) }
+
+      context 'with valid attributes' do
+        it 'assigns the requested answer to @answer' do
+          patch :update, params: { question_id: answer.question, id: answer, answer: attributes_for(:answer) }
+          expect(assigns(:answer)).to eq answer
+        end
+
+        it 'changes answer attributes' do
+          patch :update, params: { question_id: answer.question.id, id: answer, answer: { body: 'new body' } }
+          answer.reload
+
+          expect(answer.body).to eq 'new body'
+        end
+
+        it 'redirects to upload answer' do
+          patch :update, params: { question_id: answer.question.id, id: answer, answer: attributes_for(:answer) }
+          expect(response).to redirect_to question_path(answer.question)
+        end
+      end
+
+      context 'with invalid attributes' do
+        before { patch :update, params: { question_id: answer.question.id, id: answer, answer: attributes_for(:answer, :invalid) } }
+
+        it 'does not change answer' do
+          answer.reload
+
+          expect(answer.body).to eq 'Answer_Body'
+        end
+
+        it 're-renders edit view' do
+          expect(response).to render_template :edit
+        end
+      end
+    end
+
+    context 'not own answer' do
+      before { patch :update, params: { question_id: answer.question.id, id: answer, answer: { body: 'new body' } } }
+
+      it 'does not change answer' do
+        answer.reload
+
+        expect(answer.body).to eq 'Answer_Body'
+      end
+
+      it 're-renders edit view' do
+        expect(response).to redirect_to question_path(answer.question)
       end
     end
   end

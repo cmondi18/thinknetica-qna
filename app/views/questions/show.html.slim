@@ -14,6 +14,8 @@ p= @question.body
           tr
             td
               = answer.body
+            td
+              = link_to 'Edit answer', edit_question_answer_path(answer.question, answer)
 
 -else
   p There are no any answers yet.

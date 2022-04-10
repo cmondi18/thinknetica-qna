@@ -11,7 +11,7 @@ feature 'User can create question', %q{
   describe 'Authenticated user' do
     background do
       sign_in(user)
-      
+
       visit questions_path
       click_on 'Ask question'
     end
@@ -28,6 +28,7 @@ feature 'User can create question', %q{
 
     scenario 'asks a question with errors' do
       click_on 'Ask'
+
       expect(page).to have_content "Title can't be blank"
     end
   end

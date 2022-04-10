@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 feature 'User can edit answer', %q{
   In order to correct mistake in answer
   As an authenticated user

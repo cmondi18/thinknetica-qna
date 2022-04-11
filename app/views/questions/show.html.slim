@@ -20,6 +20,7 @@ p= @question.body
             td
               - if !current_user.nil? && current_user.author_of?(answer)
                 = link_to 'Edit answer', edit_question_answer_path(answer.question, answer)
+                = link_to 'Delete answer', question_answer_path(answer.question, answer), method: :delete
 
 -else
   p There are no any answers yet.

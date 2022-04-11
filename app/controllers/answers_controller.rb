@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_question, only: %i[new create]
-  before_action :set_answer, only: %i[edit update]
+  before_action :set_answer, only: %i[edit update destroy]
   before_action :check_owner, only: %i[edit update destroy]
 
   def new
@@ -27,6 +27,11 @@ class AnswersController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def destroy
+    @answer.destroy
+    redirect_to question_path(@answer.question), notice: 'Answer was successfully deleted'
   end
 
   private

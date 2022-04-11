@@ -25,18 +25,16 @@ feature 'User can delete question', %q{
 
     scenario "deletes not his question" do
       visit question_path(another_question)
-      click_on 'Delete question'
 
-      expect(page).to have_content "You can't edit/delete someone else's question"
+      expect(page).to have_no_link('Delete question')
     end
   end
 
   context 'Unauthenticated user' do
     scenario "deletes question" do
       visit question_path(question)
-      click_on 'Delete question'
 
-      expect(page).to have_content 'You need to sign in or sign up before continuing.'
+      expect(page).to have_no_link('Delete question')
     end
   end
 end

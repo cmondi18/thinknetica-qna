@@ -39,18 +39,16 @@ feature 'User can edit question', %q{
 
     scenario "edits not his question" do
       visit question_path(another_question)
-      click_on 'Edit question'
 
-      expect(page).to have_content "You can't edit/delete someone else's question"
+      expect(page).to have_no_link('Edit question')
     end
   end
 
   context 'Unauthenticated user' do
     scenario "edits question" do
       visit question_path(question)
-      click_on 'Edit question'
 
-      expect(page).to have_content 'You need to sign in or sign up before continuing.'
+      expect(page).to have_no_link('Edit question')
     end
   end
 end

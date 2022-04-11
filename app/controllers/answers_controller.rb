@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
+  before_action :authenticate_user!
   before_action :find_question, only: %i[new create]
   before_action :set_answer, only: %i[edit update]
-  before_action :authenticate_user!
   before_action :check_owner, only: %i[edit update destroy]
 
   def new
@@ -15,7 +15,7 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @question
     else
-      redirect_to @question, alert: "Can't submit answer with empty body"
+      render template: 'questions/show'
     end
   end
 
@@ -44,6 +44,6 @@ class AnswersController < ApplicationController
   end
 
   def check_owner
-    redirect_to question_path(@answer.question), alert: "You can't edit/delete someone else's answer" if User.find(@answer.user_id) != current_user
+    redirect_to question_path(@answer.question), alert: "You can't edit/delete someone else's answer" unless current_user.author_of?(@answer)
   end
 end

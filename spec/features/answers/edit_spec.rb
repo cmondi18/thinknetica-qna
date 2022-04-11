@@ -41,18 +41,16 @@ feature 'User can edit answer', %q{
 
     scenario "edits not his answer" do
       visit question_path(another_question)
-      click_on 'Edit answer'
 
-      expect(page).to have_content "You can't edit/delete someone else's answer"
+      expect(page).to have_no_link('Edit answer')
     end
   end
 
   context 'Unauthenticated user' do
     scenario "edits answer" do
       visit question_path(question)
-      click_on 'Edit answer'
 
-      expect(page).to have_content 'You need to sign in or sign up before continuing.'
+      expect(page).to have_no_link('Edit answer')
     end
   end
 end

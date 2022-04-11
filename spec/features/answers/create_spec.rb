@@ -27,7 +27,7 @@ feature 'User can answer to question', %q{
       fill_in 'Body', with: ''
       click_on 'Submit answer'
 
-      expect(page).to have_content "Can't submit answer with empty body"
+      expect(page).to have_content "Body can't be blank"
     end
   end
 

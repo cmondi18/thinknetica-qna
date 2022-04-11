@@ -7,7 +7,9 @@ class QuestionsController < ApplicationController
     @questions = Question.all
   end
 
-  def show; end
+  def show
+    @answer = Answer.new
+  end
 
   def new
     @question = Question.new
@@ -45,7 +47,7 @@ class QuestionsController < ApplicationController
   end
 
   def check_owner
-    redirect_to question_path(@question), alert: "You can't edit/delete someone else's question" if User.find(@question.user_id) != current_user
+    redirect_to question_path(@question), alert: "You can't edit/delete someone else's question" unless current_user.author_of?(@question)
   end
 
   def question_params

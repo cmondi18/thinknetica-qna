@@ -1,8 +1,11 @@
+= render 'shared/errors', resource: @answer
+
 h1= @question.title
 p= @question.body
-= link_to 'Delete question', question_path, method: :delete
-| |
-= link_to 'Edit question', edit_question_path
+- if !current_user.nil? && current_user.author_of?(@question)
+  = link_to 'Delete question', question_path(@question), method: :delete
+  | |
+  = link_to 'Edit question', edit_question_path(@question)
 
 -if @question.answers.present?
   table
@@ -15,13 +18,14 @@ p= @question.body
             td
               = answer.body
             td
-              = link_to 'Edit answer', edit_question_answer_path(answer.question, answer)
+              - if !current_user.nil? && current_user.author_of?(answer)
+                = link_to 'Edit answer', edit_question_answer_path(answer.question, answer)
 
 -else
   p There are no any answers yet.
 
 p Answer
-= form_for @question.answers.new, url: question_answers_path(@question), method: :post, local: true do |f|
+= form_with model: [@question, @answer], local: true do |f|
   = f.label :body
   = f.text_area :body
 

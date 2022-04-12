@@ -22,9 +22,11 @@ feature 'User can delete answer', %q{
 
     scenario 'deletes his answer' do
       visit question_path(question)
+      expect(page).to have_content 'Answer_Body'
       click_on 'Delete answer'
 
       expect(page).to have_content 'Answer was successfully deleted'
+      expect(page).to_not have_content 'Answer_Body'
     end
 
     scenario "deletes not his answer" do

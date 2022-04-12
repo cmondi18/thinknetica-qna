@@ -7,31 +7,17 @@ RSpec.describe User, type: :model do
   it { should validate_presence_of :email }
   it { should validate_presence_of :password }
 
-  let(:user) { create(:user) }
-
-  context 'author_of returns true' do
+  context 'verification of user authorship' do
+    let(:user) { create(:user) }
     let(:question) { create(:question, user: user) }
-    let(:answer) { create(:answer, user: user) }
-
-    it 'when user is author of question' do
-      expect(user.author_of?(question)).to eq true
-    end
-
-    it 'when user is author of answer' do
-      expect(user.author_of?(question)).to eq true
-    end
-  end
-
-  context 'author_of returns false' do
-    let(:question) { create(:question) }
     let(:answer) { create(:answer) }
 
-    it 'when user is not author of question' do
-      expect(user.author_of?(question)).to eq false
+    it 'user is author of object' do
+      expect(user).to be_author_of(question)
     end
 
-    it 'when user is not author of answer' do
-      expect(user.author_of?(question)).to eq false
+    it 'user is not author of object' do
+      expect(user).to_not be_author_of(answer)
     end
   end
 end

@@ -21,6 +21,8 @@ feature 'User can delete question', %q{
       click_on 'Delete question'
 
       expect(page).to have_content 'Question was successfully deleted'
+      expect(page).to_not have_content 'Question_title'
+      expect(page).to_not have_content 'Question_body'
     end
 
     scenario "deletes not his question" do

@@ -15,7 +15,7 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @question
     else
-      render template: 'questions/show'
+      render 'questions/show'
     end
   end
 

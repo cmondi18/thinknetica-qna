@@ -59,6 +59,7 @@ group :test do
   gem 'webdrivers'
   gem 'shoulda-matchers', '~> 5.0'
   gem 'rails-controller-testing'
+  # save_and_open_page
   gem 'launchy'
 end
 

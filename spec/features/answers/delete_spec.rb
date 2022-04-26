@@ -24,7 +24,7 @@ feature 'User can delete answer', %q{
       visit question_path(question)
       expect(page).to have_content 'Answer_Body'
       click_on 'Delete answer'
-      
+
       expect(page).to_not have_content 'Answer_Body'
     end
 
@@ -35,7 +35,7 @@ feature 'User can delete answer', %q{
     end
   end
 
-  context 'Unauthenticated user' do
+  describe 'Unauthenticated user' do
     scenario "edits answer" do
       visit question_path(question)
 

@@ -61,6 +61,8 @@ group :test do
   gem 'rails-controller-testing'
   # save_and_open_page
   gem 'launchy'
+  # screenshot_and_save_page
+  gem 'capybara-screenshot', :group => :test
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

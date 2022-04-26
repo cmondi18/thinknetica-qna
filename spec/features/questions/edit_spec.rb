@@ -14,23 +14,33 @@ feature 'User can edit question', %q{
 
     background do
       sign_in(user)
+      visit question_path(question)
     end
 
     scenario 'edits his question' do
-      visit question_path(question)
       within '.question' do
         click_on 'Edit question'
         fill_in 'Title', with: 'Test question'
         fill_in 'Body', with: 'text text text?'
         click_on 'Save'
       end
-      
+
       expect(page).to have_content 'Test question'
       expect(page).to have_content 'text text text?'
     end
 
+    scenario 'edits his question with attached files' do
+      within '.question' do
+        click_on 'Edit question'
+        attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        click_on 'Save'
+      end
+
+      expect(page).to have_link 'rails_helper.rb'
+      expect(page).to have_link 'spec_helper.rb'
+    end
+
     scenario "edits question with errors" do
-      visit question_path(question)
       within '.question' do
         click_on 'Edit question'
         fill_in 'Title', with: ''

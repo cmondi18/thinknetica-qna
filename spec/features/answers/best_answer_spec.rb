@@ -20,10 +20,14 @@ feature 'User can make answer as best', %q{
     end
 
     scenario 'marks answer as best' do
-      all('.answer').last.click_on('Mark as best')
+      within "div[data-answer_id='#{best_answer.id}']" do
+        click_on 'Mark as best'
+      end
 
-      sleep(5)
-      expect(all('.answer').first).to have_text best_answer.body
+      within '.best-answer' do
+        expect(page).to have_text best_answer.body
+        expect(page).to_not have_link 'Mark as best'
+      end
     end
   end
 

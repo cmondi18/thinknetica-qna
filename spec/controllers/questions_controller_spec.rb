@@ -157,32 +157,4 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
-
-  describe 'PUT #best' do
-    let(:answer) { create(:answer, question: question) }
-
-    before { login(user) }
-
-    context 'own question' do
-      before { question.update(user: user) }
-
-      it 'changes best answer' do
-        expect { put :best, params: { id: answer.id } }.to change(question.best_answer).to(answer)
-      end
-
-      it 're-render index view' do
-        expect(response).to render_template :index
-      end
-    end
-
-    context 'not own question' do
-      it 'doesn\t change best answer' do
-        expect { put :best, params: { id: answer.id } }.to_not change(question.best_answer).to(answer)
-      end
-
-      it 're-render index view' do
-        expect(response).to render_template :index
-      end
-    end
-  end
 end

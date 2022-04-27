@@ -5,7 +5,7 @@ class Question < ApplicationRecord
   belongs_to :best_answer, required: false, class_name: 'Answer', dependent: :destroy, optional: true
   has_many_attached :files
 
-  accepts_nested_attributes_for :links, reject_if: :all_blank
+  accepts_nested_attributes_for :links, reject_if: :all_blank, allow_destroy: true
 
   validates :title, :body, presence: true
 

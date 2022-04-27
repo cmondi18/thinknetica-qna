@@ -61,7 +61,7 @@ group :test do
   gem 'rails-controller-testing'
   # save_and_open_page
   gem 'launchy'
-  # screenshot_and_save_page
+  # screenshot_and_open_image
   gem 'capybara-screenshot', :group => :test
 end
 

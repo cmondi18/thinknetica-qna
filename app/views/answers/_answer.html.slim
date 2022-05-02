@@ -1,12 +1,7 @@
 .answer*{data: { answer_id: answer.id } }
   p= answer.body
   = render 'shared/files', files: answer.files if answer.files.attached?
-
-  .links
-    p Links:
-    ul
-      - answer.links.each do |link|
-        li= link_to link.name, link.url
+  = render 'shared/links', links: answer.links if answer.links.exists?
 
   - if current_user&.author_of?(answer)
     = link_to 'Edit answer', '#', class: 'edit-answer-link', data: { answer_id: answer.id }

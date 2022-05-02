@@ -3,8 +3,8 @@ import gistLoader from "easy-gist-async";
 document.addEventListener('turbolinks:load', function () {
     gistLoader();
 
-    var el = document.querySelector('.new-answer input[type="submit"]');
-    el.addEventListener('click', loadGist)
+    var answerSubmitButton = document.querySelector('.new-answer input[type="submit"]');
+    if (answerSubmitButton) answerSubmitButton.addEventListener('click', loadGist)
 });
 
 

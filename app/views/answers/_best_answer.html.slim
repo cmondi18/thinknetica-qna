@@ -1,6 +1,6 @@
 .answer*{data: { answer_id: answer.id } }
   p= answer.body
-  = render 'shared/files', files: answer.files if answer.files.attached?
+  = render 'shared/files', resource: answer if answer.files.attached?
   = render 'shared/links', links: answer.links if answer.links.exists?
 
   - if current_user&.author_of?(answer)

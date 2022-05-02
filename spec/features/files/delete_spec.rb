@@ -8,6 +8,7 @@ feature 'User can delete attachment files', %q{
 
   given(:user) { create(:user) }
   given(:question) { create(:question, :with_file, user: user) }
+  given(:not_own_question) { create(:question, :with_file) }
 
   describe 'Authenticated user', js: true do
 
@@ -23,6 +24,9 @@ feature 'User can delete attachment files', %q{
     end
 
     scenario "deletes not his attachment" do
+      visit question_path(not_own_question)
+
+      expect(page).to_not have_link('Delete attachment')
     end
   end
 
@@ -30,7 +34,7 @@ feature 'User can delete attachment files', %q{
     scenario "deletes attachment" do
       visit question_path(question)
 
-      expect(page).to have_no_link('Delete answer')
+      expect(page).to_not have_link('Delete attachment')
     end
   end
 end

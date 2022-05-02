@@ -15,4 +15,16 @@ RSpec.describe Link, type: :model do
       expect { create(:link, url: 'wrongURL').to raise_error(URI::InvalidURIError) }
     end
   end
+
+  context 'gist' do
+    subject(:question) { create(:question) }
+
+    it 'returns true when link is gist' do
+      expect( create(:link, name: 'test', url: 'https://gist.github.com/someuser/someid', linkable: question).gist? ).to be_truthy
+    end
+
+    it 'returns false when link is not gist' do
+      expect( create(:link, name: 'test', url: 'https://google.com', linkable: question).gist? ).to be_falsy
+    end
+  end
 end

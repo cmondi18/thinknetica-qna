@@ -13,9 +13,14 @@ RSpec.describe FilesController, type: :controller do
         expect { delete :destroy, params: { id: answer.files[0].id }, format: :js }.to change(answer.files, :count).by(-1)
       end
 
-      it 'redirects to index' do
+      it 'redirects to question path when attachment is on question' do
+        delete :destroy, params: { id: question.files[0].id }
+        expect(response).to redirect_to question
+      end
+
+      it 'redirects to question path when attachment is on answer' do
         delete :destroy, params: { id: answer.files[0].id }
-        expect(response).to redirect_to answer_path(answer)
+        expect(response).to redirect_to question_path(answer.question)
       end
     end
 
@@ -26,7 +31,7 @@ RSpec.describe FilesController, type: :controller do
 
       it 'redirects to question' do
         delete :destroy, params: { id: question.files[0].id }
-        expect(response).to redirect_to question_path(question)
+        expect(response).to redirect_to question
       end
     end
   end

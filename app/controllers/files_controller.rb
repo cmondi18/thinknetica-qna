@@ -5,7 +5,12 @@ class FilesController < ApplicationController
   def destroy
     @attachment = ActiveStorage::Attachment.find(params[:id])
     @attachment.purge
-    redirect_to @attachment.record, notice: 'Attachment was successfully deleted'
+
+    if @attachment.record.is_a?(Answer)
+      redirect_to @attachment.record.question, notice: 'Attachment was successfully deleted'
+    else
+      redirect_to @attachment.record, notice: 'Attachment was successfully deleted'
+    end
   end
 
   private

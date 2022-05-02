@@ -2,12 +2,7 @@
   h1= @question.title
   p= @question.body
   = render 'shared/files', files: @question.files if @question.files.attached?
-
-  .links
-    p Links:
-    ul
-      - @question.links.each do |link|
-        li= link_to link.name, link.url
+  = render 'shared/links', links: @question.links if @question.links.exists?
 
   - if current_user&.author_of?(@question)
     = link_to 'Delete question', question_path(@question), method: :delete

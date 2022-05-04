@@ -4,7 +4,7 @@ div class="links-#{links.first.linkable.id}"
     - links.each do |link|
       li id="link-#{link.id}"
         - if link.gist?
-          div data-gist = "#{link.url}" link_to lin.url
+          div data-gist = "#{link.url}" = link_to link.url
         - else
           = link_to link.name, link.url
 

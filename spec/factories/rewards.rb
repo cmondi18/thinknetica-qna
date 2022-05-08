@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :reward do
     name { 'Reward name' }
     question
-    user
+    answer
 
     after(:build) do |reward|
       reward.image.attach(

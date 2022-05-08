@@ -20,4 +20,15 @@ RSpec.describe User, type: :model do
       expect(user).to_not be_author_of(answer)
     end
   end
+
+  context 'verification of user rewards' do
+    let(:user) { create(:user) }
+    let(:answer) { create(:answer, user: user) }
+    let(:rewards) { create_list(:reward, 3, answer: answer) }
+    let(:another_reward) { create(:reward) }
+
+    it 'returns users reward' do
+      expect(user.rewards).to match_array(rewards)
+    end
+  end
 end

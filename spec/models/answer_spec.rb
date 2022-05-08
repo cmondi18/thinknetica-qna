@@ -18,11 +18,13 @@ RSpec.describe Answer, type: :model do
   context 'set best answer' do
     let(:user) { create(:user) }
     let(:question) { create(:question, user: user) }
+    let!(:reward) { create(:reward, question: question) }
     let(:answer) { create(:answer, question: question) }
 
     it 'user is author of object' do
       answer.mark_as_best!
       expect(question.best_answer).to eq answer
+      expect(question.reward.answer).to eq answer
     end
   end
 end

@@ -8,7 +8,7 @@ div class='question grid place-items-center rounded overflow-hidden shadow-lg'
   = render 'shared/links', links: @question.links if @question.links.exists?
 
   - if @question.reward
-    div class='px-6 py-4'
+    div class='reward px-6 py-4'
       p class='text-left' Reward is
       = image_tag(@question.reward.image, class: 'object-left max-h-20')
 

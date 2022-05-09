@@ -1,10 +1,10 @@
 .nested-fields
   .field
-    = f.label :name, 'Link name'
-    = f.text_field :name
+    = f.label :name, 'Link name', class: 'block mb-2 text-sm font-medium text-gray-900'
+    = f.text_field :name, class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
 
   .field
-    = f.label :url
-    = f.text_field :url
+    = f.label :url, class: 'block mb-2 text-sm font-medium text-gray-900'
+    = f.text_field :url, class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
 
-  = link_to_remove_association 'remove link', f
+  = link_to_remove_association 'remove link', f, class: 'text-white bg-blue-700 font-medium rounded-lg text-xs px-5 py-2.5 mr-2 mb-2'

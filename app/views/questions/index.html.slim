@@ -1,17 +1,18 @@
-- if @questions.present?
-  table
-    thead
-      tr
-        th Question title
-        th Actions
-      tbody
-        - @questions.each do |question|
-          tr
-            td
-              = question.title
-            td
-              = link_to 'Show', question_path(question)
-- else
-  p There are no any questions. Let's create first
+div class='grid place-items-center h-screen'
+  - if @questions.present?
+    table class='table-auto'
+      thead
+        tr
+          th class='px-4 py-2' Question
+          th class='px-4 py-2' Actions
+        tbody
+          - @questions.each do |question|
+            tr class='bg-gray-100'
+              td class='border px-4 py-2'
+                = question.title
+              td class='border px-4 py-2'
+                = link_to 'Show', question_path(question), class: 'inline-block border border-blue-500 rounded py-1 px-3 bg-blue-500 text-white'
+  - else
+    p class='text-m font-bold' There are no any questions. Let's create first
 
-p= link_to 'Ask question', new_question_path
+  = link_to 'Ask question', new_question_path, class: 'inline-block border border-cyan-500 rounded py-1 px-3 bg-cyan-500 text-white'

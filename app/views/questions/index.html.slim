@@ -1,18 +1,19 @@
-div class='grid place-items-center h-screen'
+div class='relative overflow-x-auto shadow-md sm:rounded-lg py-3'
   - if @questions.present?
-    table class='table-auto'
-      thead
+    table class='w-full text-sm text-left text-gray-500'
+      thead class='text-xs text-gray-700 uppercase bg-gray-50'
         tr
-          th class='px-4 py-2' Question
-          th class='px-4 py-2' Actions
+          th class='px-6 py-3' Question
+          th class='px-6 py-3' Actions
         tbody
           - @questions.each do |question|
-            tr class='bg-gray-100'
-              td class='border px-4 py-2'
+            tr class='bg-white border-b'
+              td class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap'
                 = question.title
-              td class='border px-4 py-2'
-                = link_to 'Show', question_path(question), class: 'inline-block border border-blue-500 rounded py-1 px-3 bg-blue-500 text-white'
+              td class='px-6 py-4'
+                = link_to 'Show', question_path(question), class: 'font-medium text-blue-600'
   - else
-    p class='text-m font-bold' There are no any questions. Let's create first
+    p class='px-2 py-2 font-medium text-gray-900' There are no any questions. Let's create first
 
-  = link_to 'Ask question', new_question_path, class: 'inline-block border border-cyan-500 rounded py-1 px-3 bg-cyan-500 text-white'
+  div class='pt-4 pl-2'
+    = link_to 'Ask question', new_question_path, class: 'text-white bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2'

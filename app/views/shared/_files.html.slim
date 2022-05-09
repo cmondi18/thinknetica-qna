@@ -1,5 +1,7 @@
-- resource.files.each do |file|
-  p= link_to file.filename.to_s, url_for(file)
+div class='files'
+  p Files:
+  - resource.files.each do |file|
+    = link_to file.filename.to_s, url_for(file)
 
-  - if current_user&.author_of?(resource)
-    p= link_to 'Delete attachment', file_path(file.id), method: :delete
+    - if current_user&.author_of?(resource)
+      = link_to 'Delete attachment', file_path(file.id), method: :delete, class: 'inline-block border border-red-500 rounded py-1 px-3 bg-red-500 text-white top-0 right-0'

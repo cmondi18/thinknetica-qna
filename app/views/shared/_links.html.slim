@@ -9,4 +9,4 @@ div class="links-#{links.first.linkable.id}"
           = link_to link.name, link.url
 
         - if current_user&.author_of?(link.linkable)
-          = link_to 'Delete link', link_path(link), remote: true, method: :delete
+          = link_to 'Delete link', link_path(link), remote: true, method: :delete, class: 'inline-block border border-red-500 rounded py-1 px-3 bg-red-500 text-white top-0 right-0'

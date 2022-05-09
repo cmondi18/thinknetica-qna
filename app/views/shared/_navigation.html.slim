@@ -1,14 +1,17 @@
-div class='grid place-items-center'
-  ul class='flex'
-    - if user_signed_in?
-      li class='mr-3'
-        = link_to 'Questions', questions_path, class: 'inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3'
-      li class='mr-3'
-        = link_to 'Rewards', rewards_path, class: 'inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3'
-      li class='mr-3'
-        = link_to 'LogOut', destroy_user_session_path, method: :delete, class: 'log_out inline-block border border-red-500 rounded py-1 px-3 bg-red-500 text-white top-0 right-0'
-    - else
-      li class='mr-3'
-        = link_to 'Registration', new_user_registration_path, class: 'registration inline-block border border-blue-500 rounded py-1 px-3 bg-blue-500 text-white'
-      li class='mr-3'
-        = link_to 'Login', new_user_session_path, class: 'login inline-block border border-blue-500 rounded py-1 px-3 bg-blue-500 text-white'
+nav class='bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-800'
+  div class='container flex flex-wrap justify-between items-center mx-auto'
+    span class='self-center text-xl font-semibold whitespace-nowrap dark:text-white' Thinknetica-QnA
+    div class='w-full md:block md:w-auto'
+      ul class='flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium'
+        - if user_signed_in?
+          li
+            = link_to 'Questions', questions_path, class: 'block py-2 pr-4 pl-3 text-white rounded p-0 md:p-0'
+          li
+            = link_to 'Rewards', rewards_path, class: 'block py-2 pr-4 pl-3 text-white rounded p-0 md:p-0'
+          li
+            = link_to 'LogOut', destroy_user_session_path, method: :delete, class: 'log_out text-white bg-red-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3'
+        - else
+          li
+            = link_to 'Registration', new_user_registration_path, class: 'registration text-white bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3'
+          li
+            = link_to 'Login', new_user_session_path, class: 'login text-white bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3'

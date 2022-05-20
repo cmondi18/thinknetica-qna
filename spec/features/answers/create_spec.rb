@@ -21,6 +21,7 @@ feature 'User can answer to question', %q{
       click_on 'Submit answer'
 
       expect(current_path).to eq question_path(question)
+
       within '.answer' do
         expect(page).to have_content 'answer answer!'
       end

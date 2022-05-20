@@ -2,39 +2,24 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
-  let(:answer) { create(:answer) }
+  let!(:answer) { create(:answer) }
 
   describe 'POST #create' do
     before { login(user) }
 
     context 'with valid attributes' do
       it 'saves a new answer related to question in the database' do
-        expect { post :create, params: { question_id: answer.question, answer: attributes_for(:answer) }, format: :js }.to change(answer.question.answers, :count).by(1)
+        expect { post :create, params: { question_id: answer.question, answer: attributes_for(:answer) }, format: :json }.to change(Answer, :count).by(1)
       end
 
       it 'saves a new answer related to user in the database' do
-        expect { post :create, params: { question_id: answer.question, answer: attributes_for(:answer) }, format: :js }.to change(user.answers, :count).by(1)
-      end
-
-      it 'renders create template' do
-        post :create, params: { question_id: answer.question, answer: attributes_for(:answer), format: :js }
-
-        expect(response).to render_template :create
+        expect { post :create, params: { question_id: answer.question, answer: attributes_for(:answer) }, format: :json }.to change(user.answers, :count).by(1)
       end
     end
 
     context 'with invalid attributes' do
-      before { login(user) }
-
       it 'does not save the answer' do
-        question_id = answer.question.id
-        expect { post :create, params: { question_id: question_id, answer: attributes_for(:answer, :invalid) }, format: :js }.to_not change(Answer, :count)
-      end
-
-      it 'renders create template' do
-        post :create, params: { question_id: answer.question, answer: attributes_for(:answer, :invalid) }, format: :js
-
-        expect(response).to render_template :create
+        expect { post :create, params: { question_id: answer.question, answer: attributes_for(:answer, :invalid) }, format: :json }.to_not change(Answer, :count)
       end
     end
   end
@@ -99,13 +84,13 @@ RSpec.describe AnswersController, type: :controller do
     context 'own answer' do
       before { answer.update(user_id: user.id) }
 
-      it 'deletes the question' do
+      it 'deletes the answer' do
         expect { delete :destroy, params: { question_id: answer.question, id: answer }, format: :js }.to change(user.answers, :count).by(-1)
       end
     end
 
     context 'no own question' do
-      it "doesn't delete not the own question" do
+      it "doesn't delete not the own answer" do
         answer.reload # TODO: for some reason doesn't work without it
         expect { delete :destroy, params: { question_id: answer.question, id: answer }, format: :js }.to_not change(Answer, :count)
       end

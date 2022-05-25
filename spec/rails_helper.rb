@@ -22,6 +22,8 @@ require 'capybara-screenshot/rspec'
 # require only the support files necessary.
 #
 Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
+Dir[Rails.root.join('spec/models/concerns/**_spec.rb')].each { |f| require f }
+Dir[Rails.root.join('spec/controllers/concerns/**_spec.rb')].each { |f| require f }
 
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.

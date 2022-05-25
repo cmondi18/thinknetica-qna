@@ -8,6 +8,7 @@ feature 'User can vote for liked question or answer', %q{
 
   given(:user) { create(:user) }
   given(:question) { create(:question) }
+  given(:own_question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question) }
 
 
@@ -24,7 +25,8 @@ feature 'User can vote for liked question or answer', %q{
 
         expect(page).to have_text('Votes: 1')
         expect(page).to_not have_link 'Like'
-        expect(page).to have_link 'Dislike'
+        expect(page).to_not have_link 'Dislike'
+        expect(page).to have_link 'Cancel'
       end
     end
 
@@ -34,15 +36,17 @@ feature 'User can vote for liked question or answer', %q{
 
         expect(page).to have_text('Votes: -1')
         expect(page).to_not have_link 'Dislike'
-        expect(page).to have_link 'Like'
+        expect(page).to_not have_link 'Like'
+        expect(page).to have_link 'Cancel'
       end
     end
 
     scenario 'votes for own question' do
-      question.update(user: user)
+      visit question_path(own_question)
 
       within '.question' do
         expect(page).to_not have_link 'Like'
+        expect(page).to_not have_link 'Cancel'
         expect(page).to_not have_link 'Dislike'
       end
     end
@@ -50,9 +54,26 @@ feature 'User can vote for liked question or answer', %q{
     scenario 'change decision and change like to dislike' do
       within '.question' do
         click_on 'Like'
+        click_on 'Cancel'
         click_on 'Dislike'
 
-        expect(page).to have_text('Votes: 0')
+        expect(page).to have_text('Votes: -1')
+      end
+    end
+  end
+
+  describe 'Unauthenticated user', js: true do
+    scenario 'votes for question/answer' do
+      visit question_path(question)
+
+      within '.question' do
+        expect(page).to_not have_link 'Like'
+        expect(page).to_not have_link 'Dislike'
+      end
+
+      within '.answer' do
+        expect(page).to_not have_link 'Like'
+        expect(page).to_not have_link 'Dislike'
       end
     end
   end

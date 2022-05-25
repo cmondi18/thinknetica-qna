@@ -6,6 +6,7 @@ require("jquery");
 require("@nathanvda/cocoon");
 require('../channels/answers');
 require('../channels/questions');
+require('../channels/votes')
 require('../utilites/gist_loader');
 
 import Rails from "@rails/ujs"

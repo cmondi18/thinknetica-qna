@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
+  it_behaves_like 'voted'
+
   let(:user) { create(:user) }
   let!(:answer) { create(:answer) }
 
@@ -125,7 +127,6 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'not own question' do
       it 'doesn\t change best answer' do
-        puts user.author_of?(question)
         patch :mark_as_best, params: { id: answer.id }, format: :js
         question.reload
         expect(question.best_answer).to_not eq answer

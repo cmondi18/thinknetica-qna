@@ -56,7 +56,7 @@ feature 'User can create question', %q{
   end
 
   context 'multiple sessions', js: true do
-    scenario 'questions appears on another user\'s page' do
+    scenario 'question appears on another user\'s page' do
       Capybara.using_session('guest') do
         visit questions_path
       end

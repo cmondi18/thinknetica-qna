@@ -34,7 +34,10 @@ gem 'devise'
 gem 'jquery-rails'
 
 # For nested forms
-gem "cocoon"
+gem 'cocoon'
+
+# For rails var in js
+gem 'gon'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

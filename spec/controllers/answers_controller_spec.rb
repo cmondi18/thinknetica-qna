@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   it_behaves_like 'voted'
+  it_behaves_like 'commented'
 
   let(:user) { create(:user) }
   let!(:answer) { create(:answer) }
@@ -93,7 +94,7 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'no own question' do
       it "doesn't delete not the own answer" do
-        answer.reload # TODO: for some reason doesn't work without it
+        answer.reload
         expect { delete :destroy, params: { question_id: answer.question, id: answer }, format: :js }.to_not change(Answer, :count)
       end
 

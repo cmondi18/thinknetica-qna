@@ -1,0 +1,4 @@
+div class="comments-#{commentable.id}"
+  - if user_signed_in?
+    = link_to 'Comment', polymorphic_path(commentable, action: :comment), method: :post, remote: true,
+            data: { type: :json }

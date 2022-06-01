@@ -4,7 +4,6 @@ module Voted
   included do
     before_action :authenticate_user!
     before_action :set_votable, only: %i[like dislike cancel]
-
   end
 
   def like

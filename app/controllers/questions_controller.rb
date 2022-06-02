@@ -63,7 +63,7 @@ class QuestionsController < ApplicationController
 
     ActionCable.server.broadcast 'questions',
                                  ApplicationController.render(
-                                   json: @question
+                                   json: @question.title
                                  )
   end
 end

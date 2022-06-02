@@ -70,8 +70,7 @@ class AnswersController < ApplicationController
     return if @answer.errors.any?
 
     ActionCable.server.broadcast 'answers',
-                                 ApplicationController.render(
-                                   json: @answer
-                                 )
+                                 answer: @answer.body,
+                                 user_id: @answer.user_id
   end
 end

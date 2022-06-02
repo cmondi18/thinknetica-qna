@@ -10,6 +10,7 @@
   = render 'shared/links', links: question.links if question.links.exists?
   = render 'shared/votes', votable: question
   = render 'shared/comments', commentable: question
+  = render 'shared/comment_form', commentable: question
 
   - if current_user&.author_of?(question)
     = link_to 'Delete question', question_path(question), method: :delete

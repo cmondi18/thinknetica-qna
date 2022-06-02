@@ -7,6 +7,7 @@ shared_examples_for 'commented' do
 
   describe "POST #create" do
     before { login(user) }
+
     context 'with valid attributes' do
       it 'saves a new comment related to question in the database' do
         expect { post :comment, params: { id: commentable, comment: attributes_for(:comment) }, format: :json }.to change(Comment, :count).by(1)

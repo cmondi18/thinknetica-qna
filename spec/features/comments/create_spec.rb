@@ -8,7 +8,7 @@ feature 'User can comment question/answer', %q{
 
   given(:user) { create(:user) }
   given(:question) { create(:question) }
-  given(:answer) { create(:answer, question: question) }
+  given!(:answer) { create(:answer, question: question) }
 
   describe 'Authenticated user', js: true do
     background do
@@ -19,9 +19,9 @@ feature 'User can comment question/answer', %q{
 
     scenario 'comments to question' do
       within '.question' do
-        click_on 'Comment'
-        fill_in 'Comment body', with: 'simple comment'
-        click_on 'Submit comment'
+        click_on 'Add comment'
+        fill_in 'Your comment', with: 'simple comment'
+        click_on 'Save Comment'
 
         expect(page).to have_content 'simple comment'
       end
@@ -29,20 +29,22 @@ feature 'User can comment question/answer', %q{
 
     scenario 'comments to answer' do
       within '.answer' do
-        click_on 'Comment'
-        fill_in 'Comment body', with: 'simple comment'
-        click_on 'Submit comment'
+        click_on 'Add comment'
+        fill_in 'Your comment', with: 'simple comment'
+        click_on 'Save Comment'
 
         expect(page).to have_content 'simple comment'
       end
     end
 
     scenario 'comments to question with errors' do
-      click_on 'Comment'
-      fill_in 'Comment body', with: ''
-      click_on 'Submit comment'
+      within '.question' do
+        click_on 'Add comment'
+        fill_in 'Your comment', with: ''
+        click_on 'Save Comment'
 
-      expect(page).to have_content "Body can't be blank"
+        expect(page).to have_content "Body can't be blank"
+      end
     end
 
     context 'multiple sessions', js: true do
@@ -56,9 +58,9 @@ feature 'User can comment question/answer', %q{
           visit question_path(question)
 
           within '.question' do
-            click_on 'Comment'
-            fill_in 'Comment body', with: 'simple comment'
-            click_on 'Submit comment'
+            click_on 'Add comment'
+            fill_in 'Your comment', with: 'simple comment'
+            click_on 'Save Comment'
 
             expect(page).to have_content 'simple comment'
           end
@@ -69,12 +71,12 @@ feature 'User can comment question/answer', %q{
         end
       end
     end
+  end
 
-    describe 'Unauthenticated user' do
-      scenario 'tries to answer to question' do
-        visit question_path(question)
-        expect(page).to_not have_link 'Comment'
-      end
+  describe 'Unauthenticated user' do
+    scenario 'tries to answer to question' do
+      visit question_path(question)
+      expect(page).to_not have_link 'Comment'
     end
   end
 end

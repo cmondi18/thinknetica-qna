@@ -4,21 +4,23 @@ module Commented
   included do
     before_action :authenticate_user!
     before_action :set_commentable, only: %i[comment]
+
+    after_action :publish_comment, only: %i[comment]
   end
 
   def comment
-    comment = @commentable.comments.new(commentable_params)
-    comment.assign_attributes(user: current_user)
+    @comment = @commentable.comments.new(commentable_params)
+    @comment.assign_attributes(user: current_user)
 
     respond_to do |format|
-      if comment.save
+      if @comment.save
         format.json do
-          render json: [comment: comment,
-                        author: comment.user]
+          render json: [comment: @comment]
         end
       else
         format.json do
-          render json: comment.errors.full_messages,
+          render json: [errors: @comment.errors.full_messages,
+                        comment: @comment],
                  status: :unprocessable_entity
         end
       end
@@ -37,5 +39,16 @@ module Commented
 
   def commentable_params
     params.require(:comment).permit(:body)
+  end
+
+  def publish_comment
+    return if @comment.errors.any?
+
+    ActionCable.server.broadcast 'comments', {
+        comment: @comment.body,
+        commentable_id: @comment.commentable_id,
+        commentable_type: @comment.commentable_type,
+        user_id: @comment.user_id
+    }
   end
 end

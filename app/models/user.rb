@@ -25,4 +25,8 @@ class User < ApplicationRecord
   def able_to_cancel_vote?(votable)
     !author_of?(votable) && votable.votes.pluck(:user_id).include?(id)
   end
+
+  def self.find_for_oauth(auth)
+
+  end
 end

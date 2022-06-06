@@ -25,4 +25,12 @@ feature 'User can sign in', %q{
 
     expect(page).to have_content 'Invalid Email or password.'
   end
+
+  scenario 'Sign in with GitHub' do
+    expect(page).to have_content 'Sign in with GitHub'
+    mock_auth_hash
+    click_on 'Sign in with GitHub'
+
+    expect(page).to have_content 'Successfully authenticated from Github account'
+  end
 end

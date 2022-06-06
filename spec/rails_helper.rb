@@ -73,10 +73,14 @@ RSpec.configure do |config|
 
   Capybara::Screenshot.autosave_on_failure = false
 
+  config.include OmniauthHelpers
+
   config.after(:all) do
     FileUtils.rm_rf("#{Rails.root}/tmp/storage")
   end
 end
+
+OmniAuth.config.test_mode = true
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|

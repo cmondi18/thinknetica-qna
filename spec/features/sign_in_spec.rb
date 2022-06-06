@@ -28,9 +28,17 @@ feature 'User can sign in', %q{
 
   scenario 'Sign in with GitHub' do
     expect(page).to have_content 'Sign in with GitHub'
-    mock_auth_hash
+    mock_auth_hash('github')
     click_on 'Sign in with GitHub'
 
     expect(page).to have_content 'Successfully authenticated from Github account'
+  end
+
+  scenario 'Sign in with Google' do
+    expect(page).to have_content 'Sign in with GoogleOauth2'
+    mock_auth_hash('google_Oauth2')
+    click_on 'Sign in with GoogleOauth2'
+
+    expect(page).to have_content 'Successfully authenticated from Google account'
   end
 end

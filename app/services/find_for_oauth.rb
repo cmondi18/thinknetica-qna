@@ -9,6 +9,7 @@ class FindForOauth
     authorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first
     return authorization.user if authorization
 
+    byebug
     email = auth.info[:email]
     user = User.where(email: email).first
     if user

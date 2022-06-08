@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include Pundit
+
   before_action :gon_user, unless: :devise_controller?
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -12,5 +14,5 @@ class ApplicationController < ActionController::Base
     gon.user_id = current_user&.id || -1
   end
 
-  check_authorization
+  # check_authorization
 end

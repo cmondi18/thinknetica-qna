@@ -45,7 +45,6 @@ gem 'omniauth-github'
 gem 'omniauth-google-oauth2'
 
 # for authorization
-gem 'cancancan'
 gem 'pundit'
 
 group :development, :test do

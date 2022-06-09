@@ -5,9 +5,10 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_question, only: %i[create]
   before_action :set_answer, only: %i[update destroy mark_as_best]
-  before_action :check_owner, only: %i[update destroy]
 
   after_action :publish_answer, only: %i[create]
+
+  authorize_resource
 
   def create
     @answer = current_user.answers.new(answer_params)
@@ -30,7 +31,6 @@ class AnswersController < ApplicationController
   end
 
   def update
-    authorize @answer
     @question = @answer.question
     @answer.update(answer_params)
   end
@@ -61,10 +61,6 @@ class AnswersController < ApplicationController
 
   def set_answer
     @answer = Answer.with_attached_files.find(params[:id])
-  end
-
-  def check_owner
-    redirect_to question_path(@answer.question), alert: "You can't edit/delete someone else's answer" unless current_user.author_of?(@answer)
   end
 
   def publish_answer

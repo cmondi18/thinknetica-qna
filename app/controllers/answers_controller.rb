@@ -5,14 +5,15 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_question, only: %i[create]
   before_action :set_answer, only: %i[update destroy mark_as_best]
+  before_action :authorize_answer, only: %i[update destroy mark_as_best]
 
   after_action :publish_answer, only: %i[create]
-
-  authorize_resource
 
   def create
     @answer = current_user.answers.new(answer_params)
     @answer.assign_attributes(question: @question)
+
+    authorize_answer
 
     respond_to do |format|
       if @answer.save
@@ -41,11 +42,7 @@ class AnswersController < ApplicationController
   end
 
   def mark_as_best
-    if current_user&.author_of?(@answer.question)
-      @answer.mark_as_best!
-    else
-      flash.now[:alert] = 'You must be author of main question'
-    end
+    @answer.mark_as_best!
   end
 
   private
@@ -69,5 +66,9 @@ class AnswersController < ApplicationController
     ActionCable.server.broadcast 'answers',
                                  answer: @answer.body,
                                  user_id: @answer.user_id
+  end
+
+  def authorize_answer
+    authorize @answer
   end
 end

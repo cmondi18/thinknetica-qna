@@ -75,8 +75,8 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.body).to eq 'Answer_Body'
       end
 
-      it 're-renders edit view' do
-        expect(response).to redirect_to question_path(answer.question)
+      it 'redirects to root path' do
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -92,20 +92,20 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
-    context 'no own question' do
+    context 'no own answer' do
       it "doesn't delete not the own answer" do
         answer.reload
         expect { delete :destroy, params: { question_id: answer.question, id: answer }, format: :js }.to_not change(Answer, :count)
       end
 
-      it 'redirects to question' do
+      it 'returns 403 Forbidden' do
         delete :destroy, params: { question_id: answer.question, id: answer }, format: :js
-        expect(response).to redirect_to question_path(answer.question)
+        expect(response).to have_http_status 403
       end
     end
   end
 
-  describe 'PATCH #best' do
+  describe 'PATCH #mark_as_best' do
     let(:question) { create(:question) }
     let(:answer) { create(:answer, question: question) }
 
@@ -133,9 +133,9 @@ RSpec.describe AnswersController, type: :controller do
         expect(question.best_answer).to_not eq answer
       end
 
-      it 're-render index view' do
+      it 'returns 403 Forbidden' do
         patch :mark_as_best, params: { id: answer.id }, format: :js
-        expect(response).to render_template :mark_as_best
+        expect(response).to have_http_status 403
       end
     end
   end

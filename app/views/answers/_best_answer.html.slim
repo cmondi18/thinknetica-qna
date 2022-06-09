@@ -6,7 +6,7 @@
   = render 'shared/comments', commentable: answer
   = render 'shared/comment_form', commentable: answer
 
-  - if current_user&.author_of?(answer)
+  - if policy(answer).update?
     = link_to 'Edit answer', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
     = link_to 'Delete answer', answer_path(answer), remote: true, class: 'delete-answer-link', data: { answer_id: answer.id }, method: :delete
 

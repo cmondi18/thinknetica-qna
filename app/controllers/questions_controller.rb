@@ -3,8 +3,8 @@ class QuestionsController < ApplicationController
   include Commented
 
   before_action :authenticate_user!, except: %i[index show]
-  before_action :load_question, only: %i[show edit update destroy]
-  before_action :check_owner, only: %i[edit update destroy]
+  before_action :load_question, only: %i[show update destroy]
+  before_action :authorize_question, only: %i[update destroy]
 
   after_action :publish_question, only: %i[create]
 
@@ -19,12 +19,16 @@ class QuestionsController < ApplicationController
 
   def new
     @question = Question.new
+
+    authorize @question
+
     @question.links.new
     @question.build_reward
   end
 
   def create
     @question = current_user.questions.create(question_params)
+    authorize @question
 
     if @question.save
       redirect_to @question, notice: 'Your question successfully created.'
@@ -65,5 +69,9 @@ class QuestionsController < ApplicationController
                                  ApplicationController.render(
                                    json: @question.title
                                  )
+  end
+
+  def authorize_question
+    authorize @question
   end
 end

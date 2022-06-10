@@ -4,7 +4,7 @@ class QuestionsController < ApplicationController
 
   before_action :authenticate_user!, except: %i[index show]
   before_action :load_question, only: %i[show update destroy]
-  before_action :authorize_question, only: %i[update destroy]
+  before_action :authorize_question, only: %i[show update destroy]
 
   after_action :publish_question, only: %i[create]
 
@@ -19,9 +19,6 @@ class QuestionsController < ApplicationController
 
   def new
     @question = Question.new
-
-    authorize @question
-
     @question.links.new
     @question.build_reward
   end
@@ -50,10 +47,6 @@ class QuestionsController < ApplicationController
 
   def load_question
     @question = Question.with_attached_files.find(params[:id])
-  end
-
-  def check_owner
-    redirect_to question_path(@question), alert: "You can't edit/delete someone else's question" unless current_user.author_of?(@question)
   end
 
   def question_params

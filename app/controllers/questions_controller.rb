@@ -10,6 +10,8 @@ class QuestionsController < ApplicationController
 
   def index
     @questions = Question.all
+
+    authorize @questions
   end
 
   def show

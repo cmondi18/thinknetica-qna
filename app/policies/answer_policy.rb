@@ -20,4 +20,8 @@ class AnswerPolicy < ApplicationPolicy
   def mark_as_best?
     user&.author_of?(record.question)
   end
+
+  def comment?
+    user.present?
+  end
 end

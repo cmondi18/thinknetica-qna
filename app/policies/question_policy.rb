@@ -28,4 +28,8 @@ class QuestionPolicy < ApplicationPolicy
   def destroy?
     user&.admin? || user&.author_of?(record)
   end
+
+  def comment?
+    user.present?
+  end
 end

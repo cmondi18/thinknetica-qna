@@ -24,4 +24,16 @@ class AnswerPolicy < ApplicationPolicy
   def comment?
     user.present?
   end
+
+  def like?
+    !user&.author_of?(record) && record.votes.pluck(:user_id).exclude?(user.id)
+  end
+
+  def dislike?
+    !user&.author_of?(record) && record.votes.pluck(:user_id).exclude?(user.id)
+  end
+
+  def cancel?
+    !user&.author_of?(record) && record.votes.pluck(:user_id).include?(user.id)
+  end
 end

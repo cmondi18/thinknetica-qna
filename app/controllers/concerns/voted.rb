@@ -4,13 +4,14 @@ module Voted
   included do
     before_action :authenticate_user!
     before_action :set_votable, only: %i[like dislike cancel]
+    before_action :authorize_votable, only: %i[like dislike cancel]
   end
 
   def like
     vote = @votable.votes.build(value: 1, user: current_user)
 
     respond_to do |format|
-      if current_user.able_to_vote?(@votable) && vote.save
+      if vote.save
         format.json do
           render json: [rating: @votable.rating,
                         id: @votable.id]
@@ -28,7 +29,7 @@ module Voted
     vote = @votable.votes.build(value: -1, user: current_user)
 
     respond_to do |format|
-      if current_user.able_to_vote?(@votable) && vote.save
+      if vote.save
         format.json do
           render json: [rating: @votable.rating,
                         id: @votable.id]
@@ -55,7 +56,7 @@ module Voted
     end
 
     respond_to do |format|
-      if current_user.able_to_cancel_vote?(@votable) && vote.destroy
+      if vote.destroy
         format.json do
           render json: [rating: @votable.rating,
                         id: @votable.id]
@@ -77,5 +78,9 @@ module Voted
 
   def set_votable
     @votable = model_klass.find(params[:id])
+  end
+
+  def authorize_votable
+    authorize @votable
   end
 end

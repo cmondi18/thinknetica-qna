@@ -92,6 +92,10 @@ RSpec.describe AnswerPolicy, type: :policy do
     it 'denies access if user voted before' do
       expect(subject).to_not permit(user, answer)
     end
+
+    it 'denies access if user is guest' do
+      expect(subject).to_not permit(nil, create(:answer))
+    end
   end
 
   permissions :dislike? do
@@ -109,6 +113,10 @@ RSpec.describe AnswerPolicy, type: :policy do
     it 'denies access if user voted before' do
       expect(subject).to_not permit(user, answer_with_vote)
     end
+
+    it 'denies access if user is guest' do
+      expect(subject).to_not permit(nil, create(:answer))
+    end
   end
 
   permissions :cancel? do
@@ -125,6 +133,10 @@ RSpec.describe AnswerPolicy, type: :policy do
 
     it 'denies access if user is not author of votable and did\'t vote before' do
       expect(subject).to_not permit(user, create(:answer))
+    end
+
+    it 'denies access if user is guest' do
+      expect(subject).to_not permit(nil, create(:answer))
     end
   end
 end

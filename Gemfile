@@ -44,11 +44,17 @@ gem 'omniauth'
 gem 'omniauth-github'
 gem 'omniauth-google-oauth2'
 
-# for authorization
+# For authorization
 gem 'pundit'
 
-#for self ouath
+# For self ouath
 gem 'doorkeeper'
+
+# For serializers
+gem 'active_model_serializers', '~> 0.10'
+
+# For fast json parse
+gem 'oj'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

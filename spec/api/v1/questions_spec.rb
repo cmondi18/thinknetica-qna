@@ -71,7 +71,7 @@ describe 'Questions API', type: :request do
   end
 
   describe 'GET /api/v1/questions/{id}' do
-    let!(:question) { create(:question, :with_file) }
+    let!(:question) { create(:question, :with_files) }
     let(:api_path) { "/api/v1/questions/#{question.id}" }
 
     it_behaves_like 'API Authorizable' do

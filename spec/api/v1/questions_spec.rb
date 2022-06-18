@@ -309,7 +309,7 @@ describe 'Questions API', type: :request do
 
         it 'returns 204 status code' do
           delete api_path, params: { access_token: access_token.token }, headers: headers
-          
+
           expect(response).to have_http_status :no_content
         end
 

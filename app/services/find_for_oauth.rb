@@ -21,5 +21,4 @@ class FindForOauth
 
     user
   end
-
 end

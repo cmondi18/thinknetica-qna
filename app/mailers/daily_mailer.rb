@@ -1,5 +1,4 @@
 class DailyMailer < ApplicationMailer
-
   def digest(user)
     @new_questions = Question.where(created_at: Date.today.all_day)
 

@@ -30,4 +30,15 @@ RSpec.describe Answer, type: :model do
       expect(question.reward.answer).to eq answer
     end
   end
+
+  describe 'notify author of question' do
+    let(:question) { create(:question) }
+    let(:answer) { build(:answer, question: question) }
+
+    it 'calls AnswerNotifyJob' do
+      expect(AnswerNotifyJob).to receive(:perform_later).with(answer)
+
+      answer.save!
+    end
+  end
 end

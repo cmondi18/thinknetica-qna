@@ -1,36 +1,37 @@
 .question-errors
   = render 'shared/errors', resource: @question
 
-p Question
-= render @question, question: @question, subscription: @subscription
+- cache @question do
+  p Question
+  = render @question, question: @question, subscription: @subscription
 
-.answers
-  -if @question.answers.present?
-    .best-answer
-      - if @question.best_answer
-        = render 'answers/best_answer', answer: @question.best_answer
-    .answers-list
-      = render partial: 'answers/answer', collection: @question.not_best_answers, as: :answer
-  -else
-    .no_answers There are no any answers yet.
+  .answers
+    - if @question.answers.present?
+      .best-answer
+        - if @question.best_answer
+          = render 'answers/best_answer', answer: @question.best_answer
+      .answers-list
+        = render partial: 'answers/answer', collection: @question.not_best_answers, as: :answer
+    - else
+      .no_answers There are no any answers yet.
 
-p Answer
-.answer-errors
-  = render 'shared/errors', resource: @answer
+  p Answer
+  .answer-errors
+    = render 'shared/errors', resource: @answer
 
-- if policy(Answer).new?
+  - if policy(Answer).new?
 
-  = form_with model: [@question, @answer], class: 'new-answer', local: false, data: { type: :json } do |f|
-    = f.label :body
-    = f.text_area :body
+    = form_with model: [@question, @answer], class: 'new-answer', local: false, data: { type: :json } do |f|
+      = f.label :body
+      = f.text_area :body
 
-    = f.label :files
-    = f.file_field :files, multiple: true
+      = f.label :files
+      = f.file_field :files, multiple: true
 
-    p Links:
-    #links
-      = f.fields_for :links do |link|
-        = render 'shared/links_fields', f: link
-      = link_to_add_association 'add link', f, :links, partial: 'shared/links_fields'
+      p Links:
+      #links
+        = f.fields_for :links do |link|
+          = render 'shared/links_fields', f: link
+        = link_to_add_association 'add link', f, :links, partial: 'shared/links_fields'
 
-    = f.submit 'Submit answer'
+      = f.submit 'Submit answer'
